@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +25,10 @@ public class LogController {
 		return "Log";
 	}
 
-	@RequestMapping(value = "/log2", method = { RequestMethod.GET, RequestMethod.POST })
-	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request) {
+	@RequestMapping(value = "/log2", method = { /*RequestMethod.GET,*/ RequestMethod.POST })
+	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request, @RequestBody String s) {
 
-		
+
 		// Get all HTML headers
 		String res = new String();
 		res += String.format("'%s' = %s\r\n", "protocol", request.getProtocol());
@@ -38,7 +39,8 @@ public class LogController {
 			res += String.format("'%s' = %s\r\n", entry.getKey(), entry.getValue());
 		}
 		
-		LogModel m = new LogModel(res,"msgInfo........");
+		
+		LogModel m = new LogModel(res,s);
 		model.addAttribute("msgInfo", m.getMsgInfo());
 		model.addAttribute("htmlInfo", m.getHtmlInfo());
 		return "Log";
