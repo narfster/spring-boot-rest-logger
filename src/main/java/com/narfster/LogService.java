@@ -1,5 +1,7 @@
 package com.narfster;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,9 +16,14 @@ public class LogService {
 	private static List<LogModel> logMessages = new ArrayList<LogModel>();
 
 	static {
-
-		logMessages.add(new LogModel("htmls headers 1", "Ta De Dam"));
-		logMessages.add(new LogModel("htmls headers 2", "Ta De Dassaasasasm"));
+		
+		//current time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		String time = dtf.format(now);
+		
+		logMessages.add(new LogModel(time,"html headers 1", "Ta De Dam"));
+		logMessages.add(new LogModel(time,"htmls headers 2", "Ta De Dassaasasasm"));
 	}
 	
 	public void addLogMessage(LogModel m) {

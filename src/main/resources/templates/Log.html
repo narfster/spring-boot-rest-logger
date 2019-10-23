@@ -16,7 +16,7 @@
 			</tr>
 			<tr>
 			<tr th:each="message : ${logMessages}">
-				<td>Wed, 23 Oct 2019 09:04:46 GMT</td>
+				<td th:text="${message.time}">time</td>
 				<td th:text="${message.msgInfo}">msg info</td>
 				<td th:text="${message.htmlInfo}">html headers</td>
 			</tr>

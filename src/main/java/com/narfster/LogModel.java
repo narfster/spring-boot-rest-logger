@@ -4,8 +4,10 @@ public class LogModel {
 
 	private String htmlInfo;
 	private String msgInfo;
+	private String time;
 
-	public LogModel(String htmlInfo, String msgInfo) {
+	public LogModel(String time, String htmlInfo, String msgInfo) {
+		this.time = time;
 		this.htmlInfo = htmlInfo;
 		this.msgInfo = msgInfo;
 	}
@@ -25,4 +27,10 @@ public class LogModel {
 	public void setMsgInfo(String msgInfo) {
 		this.msgInfo = msgInfo;
 	}
+	
+	public String getTime() {
+		return time;
+	}
+
+
 }

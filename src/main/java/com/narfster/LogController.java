@@ -1,5 +1,7 @@
 package com.narfster;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,6 @@ public class LogController {
 	@Autowired
 	LogService logService;
 
-
 	@RequestMapping(value = "/api/log2", method = { RequestMethod.POST })
 	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request,
 			@RequestBody String s) {
@@ -38,13 +39,17 @@ public class LogController {
 			res += String.format("'%s' = %s\r\n", entry.getKey(), entry.getValue());
 		}
 
+		// Get current date time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		String time = dtf.format(now);
 
-		logService.addLogMessage(new LogModel(res, s));
+		logService.addLogMessage(new LogModel(time,res, s));
 
 		model.addAttribute("logMessages", logService.getLogMessages());
 		return "Log";
 	}
-	
+
 	/*
 	 * Return view of Logs
 	 */
