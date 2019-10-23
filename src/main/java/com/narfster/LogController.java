@@ -1,14 +1,16 @@
 package com.narfster;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LogController {
 
-	@RequestMapping(value = "/log", method = { RequestMethod.GET, RequestMethod.POST })
-	public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) {
-		model.addAttribute("name", name);
-		return "Log";
-	}
+	@Autowired
+	LogService logService;
 
-	@RequestMapping(value = "/log2", method = { /*RequestMethod.GET,*/ RequestMethod.POST })
-	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request, @RequestBody String s) {
 
+	@RequestMapping(value = "/api/log2", method = { RequestMethod.POST })
+	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request,
+			@RequestBody String s) {
 
 		// Get all HTML headers
 		String res = new String();
@@ -38,11 +37,20 @@ public class LogController {
 		for (Map.Entry<String, String> entry : headers.entrySet()) {
 			res += String.format("'%s' = %s\r\n", entry.getKey(), entry.getValue());
 		}
-		
-		
-		LogModel m = new LogModel(res,s);
-		model.addAttribute("msgInfo", m.getMsgInfo());
-		model.addAttribute("htmlInfo", m.getHtmlInfo());
+
+
+		logService.addLogMessage(new LogModel(res, s));
+
+		model.addAttribute("logMessages", logService.getLogMessages());
+		return "Log";
+	}
+	
+	/*
+	 * Return view of Logs
+	 */
+	@RequestMapping(value = "/log2", method = { RequestMethod.GET })
+	public String showLogs(Model model) {
+		model.addAttribute("logMessages", logService.getLogMessagesNewest());
 		return "Log";
 	}
 

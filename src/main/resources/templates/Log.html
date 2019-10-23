@@ -5,7 +5,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<p th:text="'Message Info: ' + ${msgInfo}" />
-	<p th:text="'Html Info: ' + ${htmlInfo}" />
+	<div>
+		<table>
+
+			<!-- Table Header -->
+			<tr>
+				<th>Time</th>
+				<th>Message</th>
+				<th>Html headers</th>
+			</tr>
+			<tr>
+			<tr th:each="message : ${logMessages}">
+				<td>Wed, 23 Oct 2019 09:04:46 GMT</td>
+				<td th:text="${message.msgInfo}">msg info</td>
+				<td th:text="${message.htmlInfo}">html headers</td>
+			</tr>
+		</table>
+	</div>
+
+
 </body>
 </html>
