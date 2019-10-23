@@ -23,7 +23,7 @@ public class LogController {
 	LogService logService;
 
 	@RequestMapping(value = "/api/log2", method = { RequestMethod.POST })
-	public String log(Model model, @RequestHeader Map<String, String> headers, HttpServletRequest request,
+	public ResponseEntity<String> log(@RequestHeader Map<String, String> headers, HttpServletRequest request,
 			@RequestBody String s) {
 
 		// Get all HTML headers
@@ -41,10 +41,9 @@ public class LogController {
 		LocalDateTime now = LocalDateTime.now();
 		String time = dtf.format(now);
 
-		logService.addLogMessage(new LogModel(time,res, s));
+		logService.addLogMessage(new LogModel(time, res, s));
 
-		model.addAttribute("logMessages", logService.getLogMessages());
-		return "Log";
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 	/*
