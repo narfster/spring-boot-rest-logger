@@ -49,6 +49,9 @@ public class LogController {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
+	/*
+	 * API for debugging binary messages to log
+	 */
 	@RequestMapping(value = "/api/blog2", method = { RequestMethod.POST })
 	public ResponseEntity<String> binary_log(@RequestHeader Map<String, String> headers, HttpServletRequest request,
 			@RequestBody byte[] byteArr ) {
