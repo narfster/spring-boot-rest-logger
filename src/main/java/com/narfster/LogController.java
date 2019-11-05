@@ -52,6 +52,7 @@ public class LogController {
 	/*
 	 * API for debugging binary messages to log
 	 */
+	
 	@RequestMapping(value = "/api/blog2", method = { RequestMethod.POST })
 	public ResponseEntity<String> binary_log(@RequestHeader Map<String, String> headers, HttpServletRequest request,
 			@RequestBody byte[] byteArr ) {
@@ -70,6 +71,29 @@ public class LogController {
 		logService.addLogMessage(new LogModel(time, res, s));
 		
 		
+		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
+	/*
+	 * API for debugging binary messages to log
+	 */
+	@RequestMapping(value = "/api/bson", method = { RequestMethod.POST })
+	public ResponseEntity<String> logBson(@RequestHeader Map<String, String> headers, HttpServletRequest request,
+			@RequestBody byte[] byteArr ) {
+
+		String s = Bson.Deserialization(byteArr);
+		String res = new String("Payload len =" + byteArr.length);
+		
+		// debug
+		System.out.println(s);
+
+		// Get current date time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		String time = dtf.format(now);
+		
+		logService.addLogMessage(new LogModel(time, res, s));
+
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
